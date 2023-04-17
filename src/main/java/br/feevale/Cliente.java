@@ -1,7 +1,7 @@
 package br.feevale;
 
 public class Cliente {
-    long tempoDeCorte;
+    Long tempoDeCorte;
     String nome;
     Estado estado;
 }
