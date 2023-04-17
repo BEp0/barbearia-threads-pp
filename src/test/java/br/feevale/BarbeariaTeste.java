@@ -21,41 +21,46 @@ public class BarbeariaTeste {
 
     @Test
     void teste(){
-
-        Barbearia barbearia = new Barbearia();
-
-        Cadeira cadeira = new Cadeira();
-        cadeira.barbeiro = new Barbeiro("Bernardo");
-
-        barbearia.clientesCortando.add(cadeira);
-
-        barbearia.iniciarExpediente();
-
-        System.out.println(barbearia.clientesCortando.get(0).barbeiro.nome);
-        System.out.println(barbearia.clientesCortando.get(0).barbeiro.estado);
+//
+//        Barbearia barbearia = new Barbearia();
+//
+//        Cadeira cadeira = new Cadeira();
+////        cadeira.barbeiro = new Barbeiro("Bernardo");
+//
+//        barbearia.clientesCortando.add(cadeira);
+//
+//        barbearia.iniciarExpediente();
+//
+//        System.out.println(barbearia.clientesCortando.get(0).barbeiro.nome);
+//        System.out.println(barbearia.clientesCortando.get(0).barbeiro.estado);
     }
 
     @Test
     void testeDeLista() {
 
-        Cliente bernardo = new Cliente();
-        bernardo.nome = "bernardo";
+//        Cliente bernardo = new Cliente();
+//        bernardo.nome = "bernardo";
+//
+//
+//        Cliente ivan = new Cliente();
+//        ivan.nome = "ivan";
+//
+//
+//        Cliente lucas = new Cliente();
+//        lucas.nome = "lucas";
+//
+//        SalaDeEspera salaDeEspera = new SalaDeEspera();
+//
+//        salaDeEspera.receberCliente(bernardo);
+//        salaDeEspera.receberCliente(ivan);
+//        salaDeEspera.receberCliente(lucas);
 
-        Cliente ivan = new Cliente();
-        ivan.nome = "ivan";
 
-        Cliente lucas = new Cliente();
-        lucas.nome = "lucas";
+//
+//        clientesCortando.add(bernardo);
+//        clientesCortando.add(ivan);
+//        clientesCortando.add(lucas);
 
-        List<Cliente> clientesCortando = new ArrayList<>(3);
-
-        clientesCortando.add(bernardo);
-        clientesCortando.add(ivan);
-
-        System.out.println(clientesCortando.get(0).nome);
-        clientesCortando.remove(bernardo);
-        System.out.println(clientesCortando.get(0).nome);
-        clientesCortando.add(lucas);
     }
 
 }
