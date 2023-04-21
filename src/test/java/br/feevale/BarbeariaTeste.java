@@ -38,28 +38,15 @@ public class BarbeariaTeste {
     @Test
     void testeDeLista() {
 
-//        Cliente bernardo = new Cliente();
-//        bernardo.nome = "bernardo";
+//        List<Cliente> sofa = new ArrayList<>();
 //
+//        Barbeiro b1 = new Barbeiro("b1", sofa);
+//        Barbeiro b2 = new Barbeiro("b2", sofa);
+//        Barbeiro b3 = new Barbeiro("b3", sofa);
 //
-//        Cliente ivan = new Cliente();
-//        ivan.nome = "ivan";
-//
-//
-//        Cliente lucas = new Cliente();
-//        lucas.nome = "lucas";
-//
-//        SalaDeEspera salaDeEspera = new SalaDeEspera();
-//
-//        salaDeEspera.receberCliente(bernardo);
-//        salaDeEspera.receberCliente(ivan);
-//        salaDeEspera.receberCliente(lucas);
-
-
-//
-//        clientesCortando.add(bernardo);
-//        clientesCortando.add(ivan);
-//        clientesCortando.add(lucas);
+//        System.out.println(b1.sofa);
+//        System.out.println(b2.sofa);
+//        System.out.println(b3.sofa);
 
     }
 

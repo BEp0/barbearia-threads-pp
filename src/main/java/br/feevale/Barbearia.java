@@ -5,48 +5,19 @@ import java.util.List;
 
 public class Barbearia {
 
-    private static final int CAPACIDADE_MAXIMA_DE_BARBEIROS = 3;
+    public static final SalaDeEspera salaDeEspera = new SalaDeEspera();
 
-    public List<Cadeira> cadeiras = new ArrayList<>(CAPACIDADE_MAXIMA_DE_BARBEIROS);
-    public SalaDeEspera salaDeEspera = new SalaDeEspera();
+    public static void main(String[] args) {
 
+        Barbeiro b1 = new Barbeiro();
+        Barbeiro b2 = new Barbeiro();
+        Barbeiro b3 = new Barbeiro();
 
-    public void iniciarExpediente() {
-        for (Cadeira c : cadeiras) {
-            String msg = String.format(">>>>> %s iniciando o expediente", c.barbeiro.nome);
-            System.out.println(msg);
-            c.start();
+        int count = 0;
+
+        while (true) {
+            Cliente cliente = new Cliente(salaDeEspera);
+            cliente.start();
         }
-    }
-
-    public void receberCliente(List<Cliente> clientes) throws InterruptedException {
-        for(Cliente cliente: clientes){
-            if (haBarbeirosLivres()) {
-                // barbeiro pega o cliente
-                System.out.println("Tem barbeiro livre!!!");
-                cliente.estado = Estado.CORTANDO;
-                Cadeira cadeira = getCadeiraLivre();
-                cadeira.cliente = cliente;
-                cadeira.liberarCorte();
-
-                String msg = String.format(">>>> %s está sentado para cortar o cabelo com %s!!!", cliente.nome, cadeira.barbeiro.nome);
-                System.out.println(msg);
-            }else{
-                salaDeEspera.receberCliente(cliente);
-            }
-        }
-    }
-
-    private Cadeira getCadeiraLivre() {
-        return cadeiras.stream()
-                .filter(cadeira -> cadeira.barbeiro.estado.equals(EstadoBarbeiro.LIVRE))
-                .findFirst()
-                .orElseThrow();
-    }
-
-
-    private synchronized boolean haBarbeirosLivres() {
-        return cadeiras.stream()
-                .anyMatch(cadeira -> cadeira.barbeiro.estado.equals(EstadoBarbeiro.LIVRE));
     }
 }
