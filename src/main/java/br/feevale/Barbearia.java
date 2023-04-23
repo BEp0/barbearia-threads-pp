@@ -1,6 +1,5 @@
 package br.feevale;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Barbearia {
@@ -13,11 +12,15 @@ public class Barbearia {
         Barbeiro b2 = new Barbeiro();
         Barbeiro b3 = new Barbeiro();
 
+        salaDeEspera.barbeiros = List.of(b1, b2, b3);
+
         int count = 0;
 
+//        while (count++ < 20) {
         while (true) {
             Cliente cliente = new Cliente(salaDeEspera);
             cliente.start();
+
         }
     }
 }
