@@ -14,16 +14,18 @@ public class Barbeiro extends Thread {
         this.start();
     }
 
-    @Override
-    public synchronized void start() {
-        super.start();
-    }
-
     public void cortar(Cliente cliente) throws InterruptedException {
-        Thread.sleep(2000);
         cliente.estado = Estado.CORTANDO;
         this.estado = Estado.CORTANDO;
+        this.wait(cliente.tempoDeCorte);
+        cliente.wait(cliente.tempoDeCorte);
     }
+
+    public boolean estaLivre(){
+        return this.estado.equals(Estado.LIVRE) ||
+                this.estado.equals(Estado.DORMINDO);
+    }
+
     public void receber(Cliente cliente){
 //        pos.operar();
     }
