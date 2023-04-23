@@ -5,10 +5,10 @@ import java.util.Random;
 public class Cliente extends Thread {
     Long tempoDeCorte;
     Estado estado;
-    public final SalaDeEspera salaDeEspera;
+    public final Barbearia barbearia;
 
-    public Cliente(SalaDeEspera salaDeEspera) {
-        this.salaDeEspera = salaDeEspera;
+    public Cliente(Barbearia barbearia) {
+        this.barbearia = barbearia;
         this.tempoDeCorte = new Random().nextLong(50L, 500L);
     }
 
@@ -18,7 +18,7 @@ public class Cliente extends Thread {
 
     public void run() {
         try {
-            salaDeEspera.entrar(this);
+            barbearia.entrar(this);
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
         }
