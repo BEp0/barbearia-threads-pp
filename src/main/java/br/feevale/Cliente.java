@@ -1,23 +1,27 @@
 package br.feevale;
 
-import javax.swing.plaf.TableHeaderUI;
-import java.math.BigDecimal;
+import java.util.Random;
 
-public class Cliente extends Thread{
+public class Cliente extends Thread {
     Long tempoDeCorte;
     Estado estado;
     public final SalaDeEspera salaDeEspera;
 
-    public Cliente(SalaDeEspera salaDeEspera){
+    public Cliente(SalaDeEspera salaDeEspera) {
         this.salaDeEspera = salaDeEspera;
+        this.tempoDeCorte = new Random().nextLong(50L, 500L);
     }
 
     public void pagar() throws InterruptedException {
         Thread.sleep(2);
     }
 
-    public void run(){
-        salaDeEspera.entrar(this);
+    public void run() {
+        try {
+            salaDeEspera.entrar(this);
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void esperar() throws InterruptedException {
