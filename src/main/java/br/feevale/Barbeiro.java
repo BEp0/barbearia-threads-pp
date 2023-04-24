@@ -7,18 +7,31 @@ public class Barbeiro extends Thread {
     public Estado estado;
     private final Cadeira cadeira;
     public static final MaquinaCartao MAQUINA_CARTAO = new MaquinaCartao();
+    private final Barbearia barbearia;
 
-    public Barbeiro() {
+    public Barbeiro(Barbearia barbearia) {
         this.cadeira = new Cadeira(this);
+        this.barbearia = barbearia;
         estado = Estado.DORMINDO;
         this.start();
+    }
+
+    public void run() {
+        while (true) {
+            if (estado.equals(Estado.LIVRE) || estado.equals(Estado.DORMINDO)){
+                barbearia.proximoCliente(this);
+            }
+        }
     }
 
     public void cortar(Cliente cliente) throws InterruptedException {
         cliente.estado = Estado.CORTANDO;
         this.estado = Estado.CORTANDO;
-        this.wait(cliente.tempoDeCorte);
-        cliente.wait(cliente.tempoDeCorte);
+//        this.wait(cliente.tempoDeCorte);
+//        cliente.wait(cliente.tempoDeCorte);
+//
+//        this.notify();
+//        cliente.notify();
     }
 
     public boolean estaLivre(){
