@@ -2,7 +2,6 @@ package br.feevale;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Barbearia {
 
@@ -14,60 +13,59 @@ public class Barbearia {
     List<Cliente> sofa = new ArrayList<>(CAPACIDADE_MAXIMA_SOFA);
     List<Cliente> clientesDePe = new ArrayList<>(CAPACIDADE_MAXIMA_DE_CLIENTES_EM_PE);
 
-    public void receberCliente(Cliente cliente) {
-
-
-
-//        if (barbeiroLivre()) {
-//
-//        } else if (sofaEstaLivre()) {
-//            System.out.println("Tem vaga no sofa!!!");
-//            sofa.add(cliente);
-//        } else if (haEspacoParaFicarDePe()) {
-//            System.out.println("Tem vaga de pé!!!");
-//            clientesDePe.add(cliente);
-//        } else {
-//            throw new BarbeariaLotadaException("Barbearia está lotada");
-//        }
-    }
-
-    private synchronized Barbeiro getBarbeiroLivre() {
+    private Barbeiro getBarbeiroLivre() {
         return barbeiros.stream()
                 .filter(Barbeiro::estaLivre)
                 .findFirst()
                 .orElseThrow();
     }
 
-    private synchronized boolean barbeiroLivre() {
-        return Objects.nonNull(getBarbeiroLivre());
-    }
-
-    private synchronized boolean haEspacoParaFicarDePe() {
+    private boolean haEspacoParaFicarDePe() {
         return clientesDePe.isEmpty() || clientesDePe.size() < CAPACIDADE_MAXIMA_DE_CLIENTES_EM_PE;
     }
 
-    private synchronized boolean sofaEstaLivre() {
+    private boolean sofaEstaLivre() {
         return sofa.isEmpty() || sofa.size() < CAPACIDADE_MAXIMA_SOFA;
     }
 
-    public void entrar(Cliente cliente) {
-        try {
-            System.out.println("Cliente indo cortar cabelo");
-            Barbeiro barbeiro = getBarbeiroLivre();
-            barbeiro.cortar(cliente);
-        } catch (RuntimeException runtimeException) {
-            if (sofaEstaLivre()) {
-                System.out.println("Tem vaga no sofa!!!");
-                sofa.add(cliente);
-            } else if (haEspacoParaFicarDePe()) {
-                System.out.println("Tem vaga de pé!!!");
-                clientesDePe.add(cliente);
-            } else {
-                throw new BarbeariaLotadaException("Barbearia está lotada");
+    public synchronized void entrar(Cliente cliente) {
+        if (sofaEstaLivre()) {
+            sofa.add(cliente);
+            System.out.println("Cliente no sofa!!!");
+        } else if (haEspacoParaFicarDePe()) {
+            clientesDePe.add(cliente);
+            System.out.println("Tem vaga de pé!!!");
+        } else {
+            throw new BarbeariaLotadaException("Barbearia está lotada");
+        }
+    }
+
+    public synchronized void proximoCliente(Barbeiro barbeiro) {
+        if (sofa.size() > 0) {
+            try {
+                barbeiro.estado = Estado.CORTANDO;
+                Cliente cliente = getCliente();
+                System.out.println("Cliente sai do sofa\n > Cliente foi cortar cabelo");
+                barbeiro.cortar(cliente);
+            } catch (InterruptedException e) {
+                System.out.println("deu muito ruim");
             }
+        } else {
+            barbeiro.estado = Estado.LIVRE;
         }
-        catch (InterruptedException e) {
-            System.out.println("deu ruim");
+    }
+
+    private Cliente getCliente() throws InterruptedException {
+        if (sofa.size() > 0) {
+            Cliente cliente = sofa.get(0);
+            sofa.remove(0);
+
+            if (clientesDePe.size() > 0) {
+                sofa.add(clientesDePe.get(0));
+                clientesDePe.remove(0);
+            }
+            return cliente;
         }
+        throw new InterruptedException();
     }
 }
