@@ -9,7 +9,7 @@ public class Cliente extends Thread {
 
     public Cliente(Barbearia barbearia) {
         this.barbearia = barbearia;
-        this.tempoDeCorte = new Random().nextLong(50L, 500L);
+        this.tempoDeCorte = new Random().nextLong(100L, 1000L);
     }
 
     public void pagar() throws InterruptedException {
