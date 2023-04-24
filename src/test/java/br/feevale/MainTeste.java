@@ -7,47 +7,44 @@ import java.util.List;
 
 public class MainTeste {
 
-    /**
-     *  [z] três cadeiras;
-     *  [z] três barbeiros;
-     *  [] uma sala de espera com um sofá de quatro lugares;
-     *  [] o número total de clientes permitidos na barbearia é 20;
-     *  [] nenhum cliente entrará se a capacidade do local estiver satisfeita;
-     *  [] se o cliente entrou e tiver lugar no sofá ele se senta, caso contrário ele espera em pé;
-     *  [] quando um barbeiro está livre para atender, o cliente que está a mais tempo no sofá é atendido e o que está a mais tempo em pé se senta;
-     *  [] qualquer barbeiro pode aceitar pagamento, mas somente um cliente pode pagar por vez, porque só há uma maquina de cartão (POS / TEF);
-     *  [] os barbeiros dividem o seu tempo entre cortar cabelo, receber pagamento e dormir enquanto esperam por um cliente.*/
-
+    public static final Barbearia BARBEARIA = new Barbearia();
 
     @Test
-    void teste(){
-//
-//        Barbearia barbearia = new Barbearia();
-//
-//        Cadeira cadeira = new Cadeira();
-////        cadeira.barbeiro = new Barbeiro("Bernardo");
-//
-//        barbearia.clientesCortando.add(cadeira);
-//
-//        barbearia.iniciarExpediente();
-//
-//        System.out.println(barbearia.clientesCortando.get(0).barbeiro.nome);
-//        System.out.println(barbearia.clientesCortando.get(0).barbeiro.estado);
-    }
+    void barbeiroDeveFicarLivreQuandoNãoEncontrarCliente(){
+        Barbeiro b1 = new Barbeiro(BARBEARIA);
+        Barbeiro b2 = new Barbeiro(BARBEARIA);
+        Barbeiro b3 = new Barbeiro(BARBEARIA);
 
+        b1.estado = Estado.CORTANDO;
+
+        BARBEARIA.barbeiros = List.of(b1, b2, b3);
+
+        BARBEARIA.proximoCliente(b1);
+        assert b1.estado == Estado.LIVRE;
+    }
     @Test
-    void testeDeLista() {
+    void barbeiroDeveFicarComEstadoCortandoQuandoTiverCliente(){
+        Barbeiro b1 = new Barbeiro(BARBEARIA);
+        Barbeiro b2 = new Barbeiro(BARBEARIA);
+        Barbeiro b3 = new Barbeiro(BARBEARIA);
 
-//        List<Cliente> sofa = new ArrayList<>();
-//
-//        Barbeiro b1 = new Barbeiro("b1", sofa);
-//        Barbeiro b2 = new Barbeiro("b2", sofa);
-//        Barbeiro b3 = new Barbeiro("b3", sofa);
-//
-//        System.out.println(b1.sofa);
-//        System.out.println(b2.sofa);
-//        System.out.println(b3.sofa);
+        BARBEARIA.barbeiros = List.of(b1, b2, b3);
 
+        Cliente cliente1 = new Cliente(BARBEARIA);
+        Cliente cliente2 = new Cliente(BARBEARIA);
+        Cliente cliente3 = new Cliente(BARBEARIA);
+        Cliente cliente4 = new Cliente(BARBEARIA);
+
+        BARBEARIA.entrar(cliente1);
+        BARBEARIA.entrar(cliente2);
+        BARBEARIA.entrar(cliente3);
+        BARBEARIA.entrar(cliente4);
+
+        BARBEARIA.proximoCliente(b1);
+
+        System.out.println(BARBEARIA.sofa.size());
+
+        assert cliente1.estado == Estado.CORTANDO;
+        assert b1.estado == Estado.CORTANDO;
     }
-
 }
