@@ -16,11 +16,11 @@ public class Main {
 
         int count = 0;
 
-//        while (count++ < 26) {
-        while (true) {
+        while (count++ < 100) {
+//        while (true) {
+            System.out.println("Crei um cliente novo!");
             Cliente cliente = new Cliente(BARBEARIA);
             cliente.start();
-
         }
     }
 }
