@@ -1,16 +1,15 @@
 package br.feevale;
 
-import java.util.List;
+import static br.feevale.Estado.CORTANDO;
 
 public class Barbeiro extends Thread {
 
     public Estado estado;
-    private final Cadeira cadeira;
-    public static final MaquinaCartao MAQUINA_CARTAO = new MaquinaCartao();
     private final Barbearia barbearia;
+    private static final MaquinaCartao maquinaCartao = new MaquinaCartao();
+    private Cliente cliente;
 
     public Barbeiro(Barbearia barbearia) {
-        this.cadeira = new Cadeira(this);
         this.barbearia = barbearia;
         estado = Estado.DORMINDO;
         this.start();
@@ -18,31 +17,36 @@ public class Barbeiro extends Thread {
 
     public void run() {
         while (true) {
-            if (estado.equals(Estado.LIVRE) || estado.equals(Estado.DORMINDO)){
-                barbearia.proximoCliente(this);
+            try {
+                cliente = barbearia.proximoCliente();
+                cortar();
+            } catch (BarbeariaVaziaException exception) {
+                this.estado = Estado.LIVRE;
             }
         }
     }
 
-    public void cortar(Cliente cliente) throws InterruptedException {
-        cliente.estado = Estado.CORTANDO;
-        this.estado = Estado.CORTANDO;
-//        this.wait(cliente.tempoDeCorte);
-//        cliente.wait(cliente.tempoDeCorte);
-//
-//        this.notify();
-//        cliente.notify();
+    public void cortar(Cliente cliente) {
+        this.cliente = cliente;
+        this.cortar();
     }
 
-    public boolean estaLivre(){
+    private void cortar() {
+        synchronized (cliente) {
+            estado = CORTANDO;
+            cliente.estado = CORTANDO;
+            System.out.println(">>>>>> Cliente foi cortar cabelo");
+            try {
+                this.wait();
+            } catch (InterruptedException exception) {
+                System.out.println("Deu ruim ");
+            }
+            maquinaCartao.operar((int) (Math.random() * 500));
+        }
+    }
+
+    public boolean estaLivre() {
         return this.estado.equals(Estado.LIVRE) ||
                 this.estado.equals(Estado.DORMINDO);
-    }
-
-    public void receber(Cliente cliente){
-//        pos.operar();
-    }
-    public void dormir(){
-
     }
 }
