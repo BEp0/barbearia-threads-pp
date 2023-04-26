@@ -1,19 +1,18 @@
 package br.feevale;
 
-import java.util.Random;
-
 public class Cliente extends Thread {
-    Long tempoDeCorte;
+    int tempoDeCorte;
     Estado estado;
     public final Barbearia barbearia;
 
     public Cliente(Barbearia barbearia) {
         this.barbearia = barbearia;
-        this.tempoDeCorte = new Random().nextLong(100L, 1000L);
+        this.tempoDeCorte = (int)(Math.random() * 1000);
     }
 
-    public void pagar() throws InterruptedException {
-        Thread.sleep(2);
+    public void pagar(MaquinaCartao maquinaCartao) {
+        System.out.println("Cliente pagando");
+        maquinaCartao.operar(this.tempoDeCorte);
     }
 
     public void run() {
