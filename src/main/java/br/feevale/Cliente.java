@@ -23,8 +23,4 @@ public class Cliente extends Thread {
             System.out.println(e.getMessage());
         }
     }
-
-    public void esperar() throws InterruptedException {
-        this.wait();
-    }
 }
