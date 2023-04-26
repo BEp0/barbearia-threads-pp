@@ -5,6 +5,5 @@ public enum Estado {
     LIVRE,
     DORMINDO,
     SENTADO,
-    CORTANDO,
-    FINALIZADO
+    CORTANDO
 }
