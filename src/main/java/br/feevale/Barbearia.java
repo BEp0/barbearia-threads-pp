@@ -20,52 +20,45 @@ public class Barbearia {
                 .orElseThrow();
     }
 
-    private boolean haEspacoParaFicarDePe() {
-        return clientesDePe.isEmpty() || clientesDePe.size() < CAPACIDADE_MAXIMA_DE_CLIENTES_EM_PE;
-    }
+    public void entrar(Cliente cliente) {
 
-    private boolean sofaEstaLivre() {
-        return sofa.isEmpty() || sofa.size() < CAPACIDADE_MAXIMA_SOFA;
-    }
-
-    public synchronized void entrar(Cliente cliente) {
-        if (sofaEstaLivre()) {
+        if (haBarbeirosLivres()) {
+            Barbeiro barbeiro = getBarbeiroLivre();
+            barbeiro.cortar(cliente);
+        } else if (sofaEstaLivre()) {
             sofa.add(cliente);
             System.out.println("Cliente no sofa!!!");
         } else if (haEspacoParaFicarDePe()) {
             clientesDePe.add(cliente);
             System.out.println("Tem vaga de pé!!!");
         } else {
-            throw new BarbeariaLotadaException("Barbearia está lotada");
+            throw new BarbeariaLotadaException();
         }
     }
 
-    public synchronized void proximoCliente(Barbeiro barbeiro) {
-        if (sofa.size() > 0) {
-            try {
-                barbeiro.estado = Estado.CORTANDO;
-                Cliente cliente = getCliente();
-                System.out.println("Cliente sai do sofa\n > Cliente foi cortar cabelo");
-                barbeiro.cortar(cliente);
-            } catch (InterruptedException e) {
-                System.out.println("deu muito ruim");
-            }
-        } else {
-            barbeiro.estado = Estado.LIVRE;
-        }
-    }
-
-    private Cliente getCliente() throws InterruptedException {
+    public synchronized Cliente proximoCliente() {
         if (sofa.size() > 0) {
             Cliente cliente = sofa.get(0);
             sofa.remove(0);
-
             if (clientesDePe.size() > 0) {
                 sofa.add(clientesDePe.get(0));
                 clientesDePe.remove(0);
             }
             return cliente;
         }
-        throw new InterruptedException();
+        throw new BarbeariaVaziaException();
+    }
+
+    private synchronized boolean haEspacoParaFicarDePe() {
+        return clientesDePe.isEmpty() || clientesDePe.size() < CAPACIDADE_MAXIMA_DE_CLIENTES_EM_PE;
+    }
+
+    private synchronized boolean sofaEstaLivre() {
+        return sofa.isEmpty() || sofa.size() < CAPACIDADE_MAXIMA_SOFA;
+    }
+
+    private synchronized boolean haBarbeirosLivres() {
+        return barbeiros.stream()
+                .anyMatch(Barbeiro::estaLivre);
     }
 }
