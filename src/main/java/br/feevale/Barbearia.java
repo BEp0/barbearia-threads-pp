@@ -20,28 +20,35 @@ public class Barbearia {
                 .orElseThrow();
     }
 
-    public void entrar(Cliente cliente) {
+    public synchronized void entrar(Cliente cliente) {
 
-        if (haBarbeirosLivres()) {
-            Barbeiro barbeiro = getBarbeiroLivre();
-            barbeiro.cortar(cliente);
-        } else if (sofaEstaLivre()) {
+//        if (haBarbeirosLivres()) {
+//            Barbeiro barbeiro = getBarbeiroLivre();
+//            barbeiro.cortar(cliente);
+//        } else
+
+
+        if (sofaEstaLivre()) {
+            System.out.println("Cliente " + cliente.identificador + " entrando no sofa!!!");
             sofa.add(cliente);
-            System.out.println("Cliente no sofa!!!");
+            System.out.println("Cliente  " + cliente.identificador + " no sofa!!!");
         } else if (haEspacoParaFicarDePe()) {
             clientesDePe.add(cliente);
             System.out.println("Tem vaga de pé!!!");
         } else {
             throw new BarbeariaLotadaException();
         }
+
     }
 
     public synchronized Cliente proximoCliente() {
         if (sofa.size() > 0) {
             Cliente cliente = sofa.get(0);
             sofa.remove(0);
+            System.out.println("Removendo do sofa cliente " + cliente.identificador);
             if (clientesDePe.size() > 0) {
                 sofa.add(clientesDePe.get(0));
+                System.out.println("Cliente " + cliente.identificador + " sentando no sofa");
                 clientesDePe.remove(0);
             }
             return cliente;

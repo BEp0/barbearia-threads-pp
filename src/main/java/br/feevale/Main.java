@@ -8,9 +8,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Barbeiro b1 = new Barbeiro(BARBEARIA);
-        Barbeiro b2 = new Barbeiro(BARBEARIA);
-        Barbeiro b3 = new Barbeiro(BARBEARIA);
+        Barbeiro b1 = new Barbeiro(BARBEARIA, "SantosA");
+        Barbeiro b2 = new Barbeiro(BARBEARIA, "SantosB");
+        Barbeiro b3 = new Barbeiro(BARBEARIA, "SantosC");
 
         BARBEARIA.barbeiros = List.of(b1, b2, b3);
 
@@ -19,7 +19,7 @@ public class Main {
         while (count++ < 100) {
 //        while (true) {
             System.out.println("Crei um cliente novo!");
-            Cliente cliente = new Cliente(BARBEARIA);
+            Cliente cliente = new Cliente(BARBEARIA, count);
             cliente.start();
         }
     }

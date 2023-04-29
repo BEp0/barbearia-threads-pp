@@ -9,9 +9,12 @@ public class Barbeiro extends Thread {
     private static final MaquinaCartao maquinaCartao = new MaquinaCartao();
     private Cliente cliente;
 
-    public Barbeiro(Barbearia barbearia) {
+    private String nomeBarbeiro;
+
+    public Barbeiro(Barbearia barbearia, String nomeBarbeiro) {
         this.barbearia = barbearia;
         estado = Estado.DORMINDO;
+        this.nomeBarbeiro = nomeBarbeiro;
         this.start();
     }
 
@@ -26,19 +29,21 @@ public class Barbeiro extends Thread {
         }
     }
 
-    public void cortar(Cliente cliente) {
-        this.cliente = cliente;
-        this.cortar();
-    }
+//    public void cortar(Cliente cliente) {
+//        this.cliente = cliente;
+//        this.cortar();
+//    }
 
     private void cortar() {
         synchronized (cliente) {
             estado = CORTANDO;
             cliente.estado = CORTANDO;
-            System.out.println(">>>>>> Cliente foi cortar cabelo");
+            System.out.println(">>>>>> Cliente " + cliente.identificador + "foi cortar cabelo com " + nomeBarbeiro);
             try {
-                this.wait();
-            } catch (InterruptedException exception) {
+//                this.sleep(cliente.tempoDeCorte);
+                this.sleep(5000);
+                cliente.notificaThread();
+            } catch (Exception e) {
                 System.out.println("Deu ruim ");
             }
             maquinaCartao.operar((int) (Math.random() * 500));

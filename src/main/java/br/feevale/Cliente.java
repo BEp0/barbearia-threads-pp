@@ -4,9 +4,11 @@ public class Cliente extends Thread {
     int tempoDeCorte;
     Estado estado;
     public final Barbearia barbearia;
+    public final Integer identificador;
 
-    public Cliente(Barbearia barbearia) {
+    public Cliente(Barbearia barbearia, Integer identificador) {
         this.barbearia = barbearia;
+        this.identificador = identificador;
         this.tempoDeCorte = (int)(Math.random() * 1000);
     }
 
@@ -18,8 +20,15 @@ public class Cliente extends Thread {
     public void run() {
         try {
             barbearia.entrar(this);
+            this.wait();
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    public void notificaThread(){
+        this.notify();
     }
 }
