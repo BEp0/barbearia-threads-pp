@@ -4,13 +4,13 @@ import java.util.List;
 
 public class Main {
 
-    public static final Barbearia BARBEARIA = new Barbearia();
-
     public static void main(String[] args) {
 
-        Barbeiro b1 = new Barbeiro(BARBEARIA, "SantosA");
-        Barbeiro b2 = new Barbeiro(BARBEARIA, "SantosB");
-        Barbeiro b3 = new Barbeiro(BARBEARIA, "SantosC");
+        SalaDeEspera salaDeEspera = new SalaDeEspera();
+
+        Barbeiro b1 = new Barbeiro(salaDeEspera, "SantosA");
+        Barbeiro b2 = new Barbeiro(salaDeEspera, "SantosB");
+        Barbeiro b3 = new Barbeiro(salaDeEspera, "SantosC");
 
         salaDeEspera.cadeiras = List.of(b1, b2, b3);
 

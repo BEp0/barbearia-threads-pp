@@ -1,16 +1,15 @@
 package br.feevale;
 
-import static br.feevale.Estado.CORTANDO;
+import java.util.Objects;
 
 public class Barbeiro extends Thread {
 
     private String nomeBarbeiro;
     private final SalaDeEspera barbearia;
     private Cliente cliente;
+    private static final MaquinaCartao maquinaCartao = new MaquinaCartao();
 
-    private String nomeBarbeiro;
-
-    public Barbeiro(Barbearia barbearia, String nomeBarbeiro) {
+    public Barbeiro(SalaDeEspera barbearia, String nomeBarbeiro) {
         this.barbearia = barbearia;
         this.nomeBarbeiro = nomeBarbeiro;
         this.start();
@@ -37,6 +36,20 @@ public class Barbeiro extends Thread {
                 System.out.println(" | Barbeiro " + this.nomeBarbeiro + " cortando " + cliente.identificador);
             } else {
                 cliente = null;
+            }
+        }
+    }
+
+    private void realizarPagamento() {
+        maquinaCartao.operar(cliente);
+    }
+
+    public void run() {
+        while (true) {
+            receberCliente();
+            if(Objects.nonNull(cliente)) {
+                realizarCorteDeCabelo();
+                realizarPagamento();
             }
         }
     }

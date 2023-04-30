@@ -1,19 +1,17 @@
 package br.feevale;
 
 public class Cliente extends Thread {
+
     int tempoDeCorte;
     public final Integer identificador;
     public final SalaDeEspera barbearia;
 
-    public Cliente(Barbearia barbearia, Integer identificador) {
+    public Cliente(SalaDeEspera barbearia, Integer identificador) {
+        System.out.println("\n>>>> Crei um cliente novo!");
         this.barbearia = barbearia;
         this.identificador = identificador;
-        this.tempoDeCorte = (int)(Math.random() * 1000);
-    }
-
-    public void pagar(MaquinaCartao maquinaCartao) {
-        System.out.println("Cliente pagando");
-        maquinaCartao.operar(this.tempoDeCorte);
+        this.tempoDeCorte = (int)(Math.random() * 3500);
+        this.start();
     }
 
     public void run() {
@@ -22,9 +20,5 @@ public class Cliente extends Thread {
                 barbearia.notifyAll();
             }
         }
-    }
-
-    public void notificaThread(){
-        this.notify();
     }
 }
