@@ -12,15 +12,17 @@ public class Main {
         Barbeiro b2 = new Barbeiro(BARBEARIA, "SantosB");
         Barbeiro b3 = new Barbeiro(BARBEARIA, "SantosC");
 
-        BARBEARIA.barbeiros = List.of(b1, b2, b3);
+        salaDeEspera.cadeiras = List.of(b1, b2, b3);
 
         int count = 0;
 
-        while (count++ < 100) {
-//        while (true) {
-            System.out.println("Crei um cliente novo!");
-            Cliente cliente = new Cliente(BARBEARIA, count);
-            cliente.start();
+        while (true) {
+            new Cliente(salaDeEspera, count++);
+            try {
+                Thread.sleep(700);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

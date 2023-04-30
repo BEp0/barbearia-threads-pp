@@ -2,9 +2,8 @@ package br.feevale;
 
 public class Cliente extends Thread {
     int tempoDeCorte;
-    Estado estado;
-    public final Barbearia barbearia;
     public final Integer identificador;
+    public final SalaDeEspera barbearia;
 
     public Cliente(Barbearia barbearia, Integer identificador) {
         this.barbearia = barbearia;
@@ -18,13 +17,10 @@ public class Cliente extends Thread {
     }
 
     public void run() {
-        try {
-            barbearia.entrar(this);
-            this.wait();
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        synchronized (barbearia) {
+            if(barbearia.entrar(this)){
+                barbearia.notifyAll();
+            }
         }
     }
 
